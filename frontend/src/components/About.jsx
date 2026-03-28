@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "../StyleSheets/About.css";
 import heroImage from "../assets/4.png";
 import sakshamImage from "../assets/profiles/saksham.jpeg";
-import rajanImage from "../assets/2.png";
-import dhanshreeImage from "../assets/3.png";
-import rahulImage from "../assets/5.png";
+import rajanImage from "../assets/profiles/rajan.jpeg";
+import dhanshreeImage from "../assets/profiles/dhanshree.jpeg";
+import rahulImage from "../assets/profiles/rahul.jpeg";
 
 const About = ({ showHero = false }) => {
   const [activeTab, setActiveTab] = useState("mission");

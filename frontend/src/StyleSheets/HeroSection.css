@@ -1,19 +1,21 @@
-/* ============================= */
-/* HERO SECTION */
-/* ============================= */
-
 .hero-section {
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  font-family: "Poppins", sans-serif;
+  font-family: "Outfit", "Poppins", sans-serif;
 }
 
 .slider-container {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.slides-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 /* ============================= */
@@ -25,15 +27,22 @@
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1.2s ease, transform 6s ease;
-  transform: scale(1.08);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 8s cubic-bezier(0.1, 0, 0.1, 1);
+  transform: scale(1.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slide.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  transform: scale(1);
+  transform: scale(1.02);
 }
 
 /* Cinematic gradient overlay */
@@ -42,10 +51,12 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.65),
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.75)
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.8) 100%
   );
+  z-index: 1;
 }
 
 /* ============================= */
@@ -53,39 +64,80 @@
 /* ============================= */
 
 .slide-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .slide-text {
   text-align: center;
   color: white;
-  max-width: 850px;
-  padding: 0 2rem;
-  animation: fadeUp 1.2s ease forwards;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* ============================= */
-/* TYPOGRAPHY */
+/* TYPOGRAPHY & ANIMATIONS */
 /* ============================= */
 
 .slide-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  line-height: 1.15;
-  letter-spacing: -1px;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 800;
+  margin-bottom: 2rem;
+  line-height: 1;
+  letter-spacing: -2px;
+  text-transform: capitalize;
+  opacity: 0;
+  transform: translateY(50px) skewY(5deg);
+  transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+  background: linear-gradient(to bottom, #fff, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.active .slide-title {
+  opacity: 1;
+  transform: translateY(0) skewY(0deg);
+  transition-delay: 0.4s;
 }
 
 .slide-subtitle {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  margin-bottom: 2.5rem;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 400;
+  opacity: 0;
+  margin-bottom: 3.5rem;
   line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.active .slide-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+}
+
+.slide-actions {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.active .slide-actions {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 0.8s;
 }
 
 /* ============================= */
@@ -93,80 +145,192 @@
 /* ============================= */
 
 .slide-cta {
-  padding: 1rem 2.8rem;
-  font-size: 1.05rem;
+  padding: 1.2rem 3rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #0f766e, #14b8a6);
-  color: white;
+  border-radius: 100px;
+  background: white;
+  color: #0f766e;
   text-decoration: none;
-  transition: all 0.35s ease;
-  box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4);
-  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
 .slide-cta:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(20, 184, 166, 0.6);
+  transform: translateY(-5px) scale(1.02);
+  background: #0f766e;
+  color: white;
+  box-shadow: 0 25px 50px rgba(15, 118, 110, 0.4);
+}
+
+.cta-icon {
+  transition: transform 0.4s ease;
+}
+
+.slide-cta:hover .cta-icon {
+  transform: translateX(5px);
 }
 
 /* ============================= */
-/* NAVIGATION ARROWS */
+/* SLIDER CONTROLS (ARROWS + DOTS) */
 /* ============================= */
 
-.slider-nav {
+.slider-controls {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 55px;
-  height: 55px;
+  bottom: 3.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  z-index: 20;
+}
+
+.slider-nav {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 5;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slider-nav:hover {
-  background: rgba(255, 255, 255, 0.35);
-  transform: translateY(-50%) scale(1.1);
+  background: white;
+  color: #0d9488;
+  border-color: white;
+  transform: scale(1.1);
 }
 
-.slider-nav.prev {
-  left: 2rem;
+.slider-dots {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
 }
 
-.slider-nav.next {
-  right: 2rem;
+.dot {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.dot.active .dot-inner {
+  background: white;
+  transform: scale(1.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.dot.active .dot-inner::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid white;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 
 /* ============================= */
-/* ANIMATIONS */
+/* SCROLL INDICATOR */
 /* ============================= */
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.scroll-indicator {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  z-index: 20;
 }
 
+.mouse {
+  width: 26px;
+  height: 45px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  position: relative;
+}
+
+.wheel {
+  width: 4px;
+  height: 8px;
+  background: white;
+  border-radius: 2px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollWheel 2s infinite ease-in-out;
+}
+
+@keyframes scrollWheel {
+  0% { transform: translate(-50%, 0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translate(-50%, 20px); opacity: 0; }
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+
+@media (max-width: 1024px) {
+  .scroll-indicator {
+    display: none;
+  }
+}
 
 @media (max-width: 768px) {
   .slide-text {
-    padding: 2rem;
+    padding: 0 1rem;
   }
 
+  .slider-controls {
+    gap: 1.5rem;
+    bottom: 2.5rem;
+  }
+
+  .slider-nav {
+    width: 50px;
+    height: 50px;
+  }
+
+  .slide-title {
+    letter-spacing: -1px;
+  }
+}
+
+@media (max-width: 480px) {
   .slider-nav {
     display: none;
   }

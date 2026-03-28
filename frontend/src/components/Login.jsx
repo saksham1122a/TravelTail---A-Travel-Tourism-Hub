@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../StyleSheets/Login.css";
 import loginImage from "../assets/4.png";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -62,8 +64,7 @@ const Login = () => {
         throw new Error(data.message || "Login failed. Please try again.");
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      login(data.user, data.token);
 
       if (data.user.role === 'admin') {
         navigate("/admin");

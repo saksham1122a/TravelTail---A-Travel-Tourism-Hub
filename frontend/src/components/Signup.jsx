@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../StyleSheets/Signup.css";
 import signupImage from "../assets/5.png";
 
 const Signup = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -98,8 +100,7 @@ const Signup = () => {
       }
 
       // Persist session
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      login(data.user, data.token);
 
       navigate("/");
     } catch (error) {

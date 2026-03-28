@@ -10,11 +10,13 @@ import Destinations from "./components/Destinations";
 import Packages from "./components/Packages";
 import AdminDashboard from "../admin/AdminDashboard";
 import Profile from "./components/Profile";
+import { AuthProvider } from "./context/AuthContext";
 import "./App.css";
 
 const App = () => {
   return (
     <Router>
+      <AuthProvider>
       <div className="app-wrapper">
         <Navbar />
         <Routes>
@@ -36,6 +38,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
+      </AuthProvider>
     </Router>
   );
 };

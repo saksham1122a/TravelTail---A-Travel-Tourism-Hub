@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("Overview");
 
-  // Mock Data states
-  const [users, setUsers] = useState([
-    { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "user", joined: "2026-03-20" },
-    { id: 2, name: "Bob Smith", email: "bob@example.com", role: "user", joined: "2026-03-21" },
-    { id: 3, name: "Charlie Davis", email: "charlie@example.com", role: "admin", joined: "2026-03-22" },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "", role: "user" });
+  const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", role: "user", avatar: "" });
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/users", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    }
+  };
 
   const stats = [
     { label: "Total Users", value: users.length.toString(), trend: "+12%" },
@@ -22,40 +35,88 @@ const AdminDashboard = () => {
     { label: "Revenue", value: "$84,500", trend: "+24%" }
   ];
 
-  // Handlers for Users
   const handleAddNew = () => {
     setEditingUser(null);
-    setFormData({ name: "", email: "", role: "user" });
+    setFormData({ firstName: "", lastName: "", email: "", role: "user", avatar: "" });
     setIsModalOpen(true);
   };
 
   const handleEdit = (user) => {
     setEditingUser(user);
-    setFormData({ name: user.name, email: user.email, role: user.role });
+    setFormData({ 
+      firstName: user.firstName || "", 
+      lastName: user.lastName || "", 
+      email: user.email, 
+      role: user.role,
+      avatar: user.avatar || ""
+    });
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      setUsers(users.filter(u => u.id !== id));
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          setUsers(users.filter(u => u._id !== id));
+        } else {
+          alert("Failed to delete user");
+        }
+      } catch (error) {
+        console.error("Delete error", error);
+      }
     }
   };
 
-  const handleModalSubmit = (e) => {
+  const handleModalSubmit = async (e) => {
     e.preventDefault();
-    if (editingUser) {
-      // Update
-      setUsers(users.map(u => u.id === editingUser.id ? { ...u, ...formData } : u));
-    } else {
-      // Create
-      const newUser = {
-        id: Date.now(),
-        ...formData,
-        joined: new Date().toISOString().split("T")[0]
-      };
-      setUsers([...users, newUser]);
+    try {
+      const token = localStorage.getItem("token");
+      
+      if (editingUser) {
+        // Update user
+        const res = await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
+        if (res.ok) {
+          const updatedUser = await res.json();
+          setUsers(users.map(u => u._id === editingUser._id ? updatedUser : u));
+        } else {
+          const data = await res.json();
+          alert(data.message || "Failed to update user");
+        }
+      } else {
+        // Create user
+        const res = await fetch("http://localhost:5000/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
+        if (res.ok) {
+          const newUser = await res.json();
+          setUsers([...users, newUser]);
+        } else {
+          const data = await res.json();
+          alert(data.message || "Failed to add user");
+        }
+      }
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Submit error", error);
+      alert("Something went wrong");
     }
-    setIsModalOpen(false);
   };
 
   const renderOverview = () => (
@@ -93,14 +154,14 @@ const AdminDashboard = () => {
         </thead>
         <tbody>
           {usersData.length > 0 ? usersData.map(user => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
+            <tr key={user._id}>
+              <td>{user.firstName} {user.lastName}</td>
               <td>{user.email}</td>
               <td><span className={`role-badge ${user.role}`}>{user.role}</span></td>
-              <td>{user.joined}</td>
+              <td>{user.createdAt ? user.createdAt.substring(0, 10) : 'N/A'}</td>
               <td>
                 <button className="btn-action edit" onClick={() => handleEdit(user)}>Edit</button>
-                <button className="btn-action delete" onClick={() => handleDelete(user.id)}>Delete</button>
+                <button className="btn-action delete" onClick={() => handleDelete(user._id)}>Delete</button>
               </td>
             </tr>
           )) : (
@@ -182,11 +243,20 @@ const AdminDashboard = () => {
             <h2>{editingUser ? "Edit User Profile" : "Add New User"}</h2>
             <form onSubmit={handleModalSubmit}>
               <div className="form-group">
-                <label>Full Name</label>
+                <label>First Name</label>
                 <input 
                   type="text" 
-                  value={formData.name} 
-                  onChange={(e) => setFormData({...formData, name: e.target.value})} 
+                  value={formData.firstName} 
+                  onChange={(e) => setFormData({...formData, firstName: e.target.value})} 
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>Last Name</label>
+                <input 
+                  type="text" 
+                  value={formData.lastName} 
+                  onChange={(e) => setFormData({...formData, lastName: e.target.value})} 
                   required 
                 />
               </div>
@@ -208,6 +278,15 @@ const AdminDashboard = () => {
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </select>
+              </div>
+              <div className="form-group">
+                <label>Avatar URL</label>
+                <input 
+                  type="text" 
+                  value={formData.avatar} 
+                  onChange={(e) => setFormData({...formData, avatar: e.target.value})} 
+                  placeholder="https://example.com/photo.jpg"
+                />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn-cancel" onClick={() => setIsModalOpen(false)}>Cancel</button>

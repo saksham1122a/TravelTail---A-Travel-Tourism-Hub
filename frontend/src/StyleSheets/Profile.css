@@ -41,119 +41,272 @@
 }
 
 .profile-avatar-large {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background: var(--white);
   color: var(--primary);
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border: 4px solid var(--white);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border: 5px solid var(--white);
   position: absolute;
-  top: -60px;
+  top: -70px;
   left: 50%;
   transform: translateX(-50%);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Editable Avatar State */
+.profile-avatar-large.editable {
+  cursor: pointer;
+  border: 5px solid var(--primary);
+}
+
+.avatar-upload-label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.avatar-placeholder span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-avatar-large.editable::after {
+  content: 'Edit Image';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15, 118, 110, 0.8);
+  color: white;
+  font-size: 0.7rem;
+  padding: 8px 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-weight: 600;
+}
+
+.profile-avatar-large.editable:hover::after {
+  opacity: 1;
+}
+
+.profile-avatar-large.editable:hover {
+  transform: translateX(-50%) scale(1.05);
 }
 
 .profile-details {
-  margin-top: 40px;
+  margin-top: 60px;
   width: 100%;
   text-align: center;
 }
 
 .profile-title {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: var(--dark);
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .profile-role {
   color: var(--primary);
   font-weight: 600;
-  margin-top: 5px;
+  margin-top: 10px;
   display: inline-block;
   background: rgba(15, 118, 110, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  border: 1px solid rgba(15, 118, 110, 0.2);
 }
 
 .profile-info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-top: 2.5rem;
+  gap: 2rem;
+  margin-top: 3.5rem;
   text-align: left;
 }
 
 .info-group {
-  background: var(--light);
-  padding: 1rem 1.5rem;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  background: #fdfdfd;
+  padding: 1.2rem 1.8rem;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.info-group:hover {
+  border-color: var(--primary);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
 }
 
 .info-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--muted);
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-weight: 700;
+  margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 .info-value {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--dark);
   font-weight: 600;
 }
 
-.profile-actions {
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
+/* PREMIUM INPUT STYLING */
+.info-group input {
+  width: 100%;
+  padding: 0.8rem 0;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid #eee;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--dark);
+  font-family: inherit;
+  transition: all 0.3s ease;
 }
 
-.edit-profile-btn {
-  padding: 0.8rem 2rem;
+.info-group input:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+
+/* POSITION TOGGLE STYLES */
+.position-toggle-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pos-btn {
+  flex: 1;
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  color: var(--muted);
+}
+
+.pos-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.pos-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 10px rgba(15, 118, 110, 0.2);
+}
+
+.profile-actions {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.btn-primary.edit-profile-btn {
+  padding: 1rem 3rem;
   font-size: 1.1rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2);
 }
 
 .profile-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
 .stat-card {
   background: var(--white);
-  padding: 2rem;
-  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
   box-shadow: var(--shadow);
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card h3 {
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
 .stat-value {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--primary);
-  font-weight: 800;
-  margin-top: 10px;
+  font-weight: 900;
+  margin-top: 15px;
 }
 
-.profile-loading {
+/* General Error Styling */
+.general-error {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Entrance Animations */
+.profile-content {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+ .profile-loading {
   height: 100vh;
   display: flex;
   align-items: center;
@@ -166,7 +319,7 @@
 @media (max-width: 768px) {
   .profile-info-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .profile-stats {
@@ -174,8 +327,14 @@
   }
 
   .profile-content {
-    padding-top: 120px;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-top: 140px;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+
+  .profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    top: -60px;
   }
 }

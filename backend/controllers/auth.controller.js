@@ -23,11 +23,14 @@ const register = async (req, res) => {
       message: 'Account created successfully',
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        phone: user.phone,
         role: user.role,
+        avatar: user.avatar,
+        objectPosition: user.objectPosition,
       },
     });
   } catch (error) {
@@ -60,11 +63,14 @@ const login = async (req, res) => {
       message: 'Login successful',
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        phone: user.phone,
         role: user.role,
+        avatar: user.avatar,
+        objectPosition: user.objectPosition,
       },
     });
   } catch (error) {

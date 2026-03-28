@@ -77,34 +77,69 @@ const HeroSection = () => {
               key={index}
               className={`slide ${index === currentSlide ? "active" : ""}`}
               style={{
-                backgroundImage: `url(${slide.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
+                backgroundImage: `url(${slide.image})`
               }}
             >
               <div className="overlay"></div>
               <div className="slide-content">
-                <div className="slide-text">
-                  <h1 className="slide-title">{slide.title}</h1>
-                  <p className="slide-subtitle">{slide.subtitle}</p>
-                  <Link to={slide.link} className="slide-cta">{slide.cta}</Link>
+                <div className="container">
+                  <div className="slide-text">
+                    <h1 className="slide-title">{slide.title}</h1>
+                    <p className="slide-subtitle">{slide.subtitle}</p>
+                    <div className="slide-actions">
+                      <Link to={slide.link} className="slide-cta">
+                        {slide.cta}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="cta-icon">
+                          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <button className="slider-nav prev" onClick={prevSlide}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button className="slider-nav next" onClick={nextSlide}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+        {/* Slider Controls */}
+        <div className="slider-controls">
+          <button className="slider-nav prev" onClick={prevSlide} aria-label="Previous slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          
+          <div className="slider-dots">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                className={`dot ${index === currentSlide ? "active" : ""}`}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+              >
+                <span className="dot-inner"></span>
+              </button>
+            ))}
+          </div>
+
+          <button className="slider-nav next" onClick={nextSlide} aria-label="Next slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator">
+          <div className="mouse">
+            <div className="wheel"></div>
+          </div>
+          <div className="arrows">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       </div>
     </section>
   );
