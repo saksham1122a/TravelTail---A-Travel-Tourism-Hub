@@ -26,8 +26,8 @@ const Navbar = () => {
     <header className="navbar">
       <div className="nav-logo">
         <Link to="/">
-          <img src={logo} alt="TravelTail Logo" className="logo-img" />
-          <span>TravelTail</span>
+          <img src={logo} alt="TravelTales Logo" className="logo-img" />
+          <span>TravelTales</span>
         </Link>
       </div>
 

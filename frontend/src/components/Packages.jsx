@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../StyleSheets/Packages.css";
 
 const Packages = () => {
@@ -58,17 +59,59 @@ const Packages = () => {
     }
   ];
 
+  const containerVariants = {
+    initial: {},
+    animate: {
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  const cardVariants = {
+    initial: { opacity: 0, y: 30, scale: 0.95 },
+    animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6 } },
+    hover: { 
+      y: -10, 
+      scale: 1.02,
+      boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+      transition: { duration: 0.3 } 
+    }
+  };
+
   return (
     <div className="packages-page">
       <div className="packages-hero">
-        <div className="hero-content">
-          <h1>Curated Travel Packages</h1>
-          <p>Find the perfect itinerary for your next adventure.</p>
-        </div>
+        <motion.div 
+          className="hero-content"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            Curated Travel Packages
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Find the perfect itinerary for your next adventure.
+          </motion.p>
+        </motion.div>
       </div>
 
       <div className="packages-content container">
-        <div className="billing-toggle-container">
+        <motion.div 
+          className="billing-toggle-container"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
           <div className="billing-toggle">
             <button
               className={billingCycle === "person" ? "active" : ""}
@@ -83,20 +126,47 @@ const Packages = () => {
               For Couples
             </button>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="packages-grid">
+        <motion.div 
+          className="packages-grid"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+        >
           {packages.map((pkg) => (
-            <div key={pkg.id} className={`package-card ${pkg.featured ? "featured" : ""}`}>
+            <motion.div 
+              key={pkg.id} 
+              className={`package-card ${pkg.featured ? "featured" : ""}`}
+              variants={cardVariants}
+              whileHover="hover"
+            >
               {pkg.featured && (
-                <div className="package-badge">{pkg.badgeText}</div>
+                <motion.div 
+                  className="package-badge"
+                  initial={{ rotate: -15, scale: 0 }}
+                  animate={{ rotate: 0, scale: 1 }}
+                  transition={{ delay: 1, type: "spring" }}
+                >
+                  {pkg.badgeText}
+                </motion.div>
               )}
               
               <div className="package-header">
                 <h4>{pkg.type}</h4>
                 <h3>{pkg.name}</h3>
                 <div className="package-price">
-                  <span className="amount">{pkg.price}</span>
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={pkg.price}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="amount"
+                    >
+                      {pkg.price}
+                    </motion.span>
+                  </AnimatePresence>
                   <span className="billing">{pkg.billing}</span>
                 </div>
                 <div className="package-duration">
@@ -107,24 +177,34 @@ const Packages = () => {
               <div className="package-features">
                 <ul>
                   {pkg.features.map((feature, index) => (
-                    <li key={index}>
+                    <motion.li 
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      viewport={{ once: true }}
+                    >
                       <svg className="check-icon" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                       {feature}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </div>
 
               <div className="package-footer">
-                <button className={`btn-book ${pkg.featured ? "btn-primary" : "btn-outline"}`}>
+                <motion.button 
+                  className={`btn-book ${pkg.featured ? "btn-primary" : "btn-outline"}`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Book Now
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

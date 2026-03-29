@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
+import Preloader from "./components/animation";
 import HeroSection from "./components/HeroSection";
 import Contact from "./components/Contact";
 import About from "./components/About";
@@ -11,36 +13,51 @@ import Packages from "./components/Packages";
 import AdminDashboard from "../admin/AdminDashboard";
 import Profile from "./components/Profile";
 import { AuthProvider } from "./context/AuthContext";
+import PageWrapper from "./components/PageWrapper";
+import ScrollToTop from "./components/ScrollToTop";
 import "./App.css";
 
-const App = () => {
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
   return (
-    <Router>
-      <AuthProvider>
-      <div className="app-wrapper">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={
-          <>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+          <PageWrapper>
             <HeroSection />
             <About />
             <Contact />
             <Footer />
-          </>
+          </PageWrapper>
         } />
-          <Route path="/about" element={<About showHero={true} />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/destinations" element={<Destinations />} />
-          <Route path="/packages" element={<Packages />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </div>
+        <Route path="/about" element={<PageWrapper><About showHero={true} /></PageWrapper>} />
+        <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+        <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
+        <Route path="/destinations" element={<PageWrapper><Destinations /></PageWrapper>} />
+        <Route path="/packages" element={<PageWrapper><Packages /></PageWrapper>} />
+        <Route path="/admin" element={<PageWrapper><AdminDashboard /></PageWrapper>} />
+        <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <ScrollToTop />
+      <AuthProvider>
+        <div className="app-wrapper">
+          <Preloader />
+          <Navbar />
+          <AnimatedRoutes />
+        </div>
       </AuthProvider>
     </Router>
   );
 };
 
 export default App;
+

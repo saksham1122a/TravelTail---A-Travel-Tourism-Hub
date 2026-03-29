@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../StyleSheets/Destination.css";
 
 const Destinations = () => {
@@ -76,48 +77,86 @@ const Destinations = () => {
   return (
     <div className="destinations-page">
       <div className="destinations-hero">
-        <div className="hero-content">
+        <motion.div 
+          className="hero-content"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <h1>Explore the World</h1>
           <p>Discover breathtaking destinations curated just for you.</p>
-        </div>
+        </motion.div>
       </div>
 
       <div className="destinations-content container">
-        <div className="filters-container">
+        <motion.div 
+          className="filters-container"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           {categories.map((category) => (
-            <button
+            <motion.button
               key={category}
               className={`filter-btn ${activeCategory === category ? "active" : ""}`}
               onClick={() => setActiveCategory(category)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {category}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="destinations-grid">
-          {filteredDestinations.map((dest) => (
-            <div key={dest.id} className="destination-card">
-              <div className="card-image-wrapper">
-                <img src={dest.image} alt={dest.name} loading="lazy" />
-                <div className="card-badge">{dest.category}</div>
-              </div>
-              <div className="card-details">
-                <div className="card-header">
-                  <h3>{dest.name}</h3>
-                  <div className="rating">
-                    <span className="star">★</span> {dest.rating} <span className="reviews">({dest.reviews})</span>
+        <motion.div 
+          layout
+          className="destinations-grid"
+        >
+          <AnimatePresence>
+            {filteredDestinations.map((dest) => (
+              <motion.div 
+                key={dest.id} 
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.4 }}
+                className="destination-card"
+                whileHover={{ y: -10 }}
+              >
+                <div className="card-image-wrapper">
+                  <motion.img 
+                    src={dest.image} 
+                    alt={dest.name} 
+                    loading="lazy" 
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <div className="card-badge">{dest.category}</div>
+                </div>
+                <div className="card-details">
+                  <div className="card-header">
+                    <h3>{dest.name}</h3>
+                    <div className="rating">
+                      <span className="star">★</span> {dest.rating} <span className="reviews">({dest.reviews})</span>
+                    </div>
+                  </div>
+                  <p className="description">{dest.description}</p>
+                  <div className="card-footer">
+                    <span className="price">{dest.price}</span>
+                    <motion.button 
+                      className="btn-primary"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Explore
+                    </motion.button>
                   </div>
                 </div>
-                <p className="description">{dest.description}</p>
-                <div className="card-footer">
-                  <span className="price">{dest.price}</span>
-                  <button className="btn-primary">Explore</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   );

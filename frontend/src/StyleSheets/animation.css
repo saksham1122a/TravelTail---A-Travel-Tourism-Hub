@@ -1,0 +1,179 @@
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #60a5fa;
+  --accent-color: #f59e0b;
+  --bg-dark: #0f172a;
+  --text-white: #f8fafc;
+}
+
+.preloader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+.preloader-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.preloader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Compass Animation */
+.compass-icon {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+}
+
+.compass-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-45deg); /* Start at a slight angle */
+  animation: compass-reveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.outer-circle {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 1.5;
+  stroke-dasharray: 302;
+  stroke-dashoffset: 302;
+  animation: stroke-draw 1.5s ease-out forwards;
+}
+
+.inner-circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+.cardinal-text {
+  fill: var(--text-white);
+  font-size: 8px;
+  font-weight: bold;
+  opacity: 0;
+  animation: fade-in 0.5s ease-out 1.2s forwards;
+}
+
+.needle-group {
+  transform-origin: 50% 50%;
+  animation: needle-spin 2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.needle-north {
+  fill: #ef4444; /* North is red */
+}
+
+.needle-south {
+  fill: #94a3b8;
+}
+
+.needle-center {
+  fill: var(--text-white);
+}
+
+/* Brand Text Animation */
+.brand-animation {
+  margin-bottom: 1.5rem;
+}
+
+.brand-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  color: var(--text-white);
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+}
+
+.brand-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: char-reveal 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.brand-underline {
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  margin-top: 0.5rem;
+  animation: underline-grow 1s ease-out 1.5s forwards;
+}
+
+/* Loading Progress Bar */
+.loading-progress {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  animation: progress-fill 2s ease-in-out forwards;
+}
+
+/* Keyframes */
+@keyframes compass-reveal {
+  0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes stroke-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes needle-spin {
+  0% { transform: rotate(0deg); }
+  60% { transform: rotate(760deg); }
+  85% { transform: rotate(710deg); }
+  100% { transform: rotate(720deg); } /* Two full rotations plus back to North */
+}
+
+@keyframes char-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underline-grow {
+  to { width: 100%; }
+}
+
+@keyframes progress-fill {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes fade-in {
+  to { opacity: 1; }
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+  .brand-text { font-size: 2rem; }
+  .compass-icon { width: 80px; height: 80px; }
+  .loading-progress { width: 150px; }
+}
