@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "../StyleSheets/About.css";
 import heroImage from "../assets/4.png";
-import sakshamImage from "../assets/profiles/saksham.jpeg";
+import tejImage from "../assets/profiles/tej.jpeg";
 import rajanImage from "../assets/profiles/rajan.jpeg";
 import dhanshreeImage from "../assets/profiles/dhanshree.jpeg";
 import rahulImage from "../assets/profiles/rahul.jpeg";
@@ -25,10 +25,10 @@ const About = ({ showHero = false }) => {
       description: "Dhanshree ensures smooth operations and exceptional customer experiences across all our destinations."
     },
     {
-      name: "Saksham Nanda",
+      name: "Tejveer Singh",
       role: "Marketing Director",
-      image: sakshamImage,
-      description: "Saksham brings creative marketing strategies to connect travelers with their dream destinations."
+      image: tejImage,
+      description: "Tejveer brings creative marketing strategies to connect travelers with their dream destinations."
     },
     {
       name: "Rahul Abrol",
@@ -85,7 +85,7 @@ const About = ({ showHero = false }) => {
     <section className="about-section">
       {showHero && (
         <div className="about-hero">
-          <motion.div 
+          <motion.div
             className="hero-content"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -97,7 +97,7 @@ const About = ({ showHero = false }) => {
               Since 2008, we've been crafting unforgettable journeys that connect travelers with the world's most amazing destinations. Our passion for travel and commitment to excellence has made us a trusted name in the industry.
             </p>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="hero-image"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -110,7 +110,7 @@ const About = ({ showHero = false }) => {
 
       <div className="stats-section">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="stats-grid"
             variants={staggerContainer}
             initial="initial"
@@ -118,8 +118,8 @@ const About = ({ showHero = false }) => {
             viewport={{ once: true }}
           >
             {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 className="stat-card"
                 variants={fadeInUp}
               >
@@ -133,7 +133,7 @@ const About = ({ showHero = false }) => {
 
       <div className="tabs-section">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="tabs-header"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +153,7 @@ const About = ({ showHero = false }) => {
           <div className="tab-content">
             <AnimatePresence mode="wait">
               {activeTab === "mission" && (
-                <motion.div 
+                <motion.div
                   key="mission"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -171,7 +171,7 @@ const About = ({ showHero = false }) => {
                       { icon: "🎯", title: "Personalized Experience", text: "Tailored journeys that match your unique preferences" },
                       { icon: "🌟", title: "Exceptional Service", text: "24/7 support throughout your travel journey" }
                     ].map((item, i) => (
-                      <motion.div 
+                      <motion.div
                         key={i}
                         className="highlight-item"
                         initial={{ opacity: 0, y: 20 }}
@@ -190,7 +190,7 @@ const About = ({ showHero = false }) => {
               )}
 
               {activeTab === "vision" && (
-                <motion.div 
+                <motion.div
                   key="vision"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -208,7 +208,7 @@ const About = ({ showHero = false }) => {
                       { icon: "🌍", title: "Global Impact", text: "Creating positive change through responsible tourism" },
                       { icon: "🤝", title: "Community", text: "Building a global family of passionate travelers" }
                     ].map((item, i) => (
-                      <motion.div 
+                      <motion.div
                         key={i}
                         className="goal-item"
                         initial={{ opacity: 0, y: 20 }}
@@ -224,7 +224,7 @@ const About = ({ showHero = false }) => {
               )}
 
               {activeTab === "values" && (
-                <motion.div 
+                <motion.div
                   key="values"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -235,8 +235,8 @@ const About = ({ showHero = false }) => {
                   <h2>The Principles That Guide Us</h2>
                   <div className="values-grid">
                     {values.map((value, index) => (
-                      <motion.div 
-                        key={index} 
+                      <motion.div
+                        key={index}
                         className="value-card"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -257,7 +257,7 @@ const About = ({ showHero = false }) => {
 
       <div className="team-section">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="section-header"
             {...fadeInUp}
           >
@@ -265,7 +265,7 @@ const About = ({ showHero = false }) => {
             <p>The passionate people behind your perfect travel experiences</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="team-grid"
             variants={staggerContainer}
             initial="initial"
@@ -273,8 +273,8 @@ const About = ({ showHero = false }) => {
             viewport={{ once: true }}
           >
             {teamMembers.map((member, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 className="team-card"
                 variants={fadeInUp}
               >
@@ -292,7 +292,7 @@ const About = ({ showHero = false }) => {
         </div>
       </div>
 
-      <motion.div 
+      <motion.div
         className="cta-section"
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}

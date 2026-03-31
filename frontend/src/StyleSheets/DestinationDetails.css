@@ -1,0 +1,257 @@
+.destination-details-page {
+  font-family: "Poppins", sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* HERO SECTION */
+.details-hero {
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 5rem;
+  color: white;
+}
+
+.details-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+}
+
+.details-hero .container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-text h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.category-tag {
+  background: #14b8a6;
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.meta-info {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.meta-info i {
+  margin-right: 6px;
+}
+
+/* CONTENT LAYOUT */
+.details-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3rem;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* MAIN CONTENT */
+.main-info h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.main-info h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: #14b8a6;
+  border-radius: 2px;
+}
+
+.overview {
+  margin-bottom: 3rem;
+}
+
+.long-desc {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #475569;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  color: #475569;
+}
+
+.highlight-item i {
+  color: #10b981;
+}
+
+/* BOOKING SIDEBAR */
+.booking-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 100px;
+  border: 1px solid #f1f5f9;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.price-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.price-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.price-info {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.btn-book-now {
+  width: 100%;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.btn-book-now:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(13, 148, 136, 0.3);
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+}
+
+.extra-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1.5rem;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.benefit i {
+  color: #14b8a6;
+  font-size: 1.1rem;
+}
+
+/* NAVIGATION */
+.navigation-actions {
+    padding-bottom: 5rem;
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1.5px solid #e2e8f0;
+    color: #64748b;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    border-color: #14b8a6;
+    color: #14b8a6;
+    background: #f0fdfa;
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+  .details-content {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  
+  .booking-sidebar {
+    order: -1;
+  }
+  
+  .booking-card {
+    position: relative;
+    top: 0;
+  }
+  
+  .hero-text h1 {
+    font-size: 3rem;
+  }
+}

@@ -1,9 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import PaymentModal from "./PaymentModal";
 import "../StyleSheets/Destination.css";
 
 const Destinations = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const navigate = useNavigate();
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedDestination, setSelectedDestination] = useState(null);
+
+  const handleBookNow = (dest) => {
+    setSelectedDestination(dest);
+    setIsPaymentModalOpen(true);
+  };
 
   const categories = ["All", "Beaches", "Mountains", "Cities", "Cultural"];
 
@@ -16,7 +26,9 @@ const Destinations = () => {
       rating: 4.8,
       reviews: "1.2k",
       description: "Experience tropical paradise with pristine beaches, ancient temples, and vibrant culture.",
-      price: "From $899"
+      price: "$899",
+      duration: "5 Days",
+      transport: "Flight included"
     },
     {
       id: 2,
@@ -26,7 +38,9 @@ const Destinations = () => {
       rating: 4.9,
       reviews: "2.5k",
       description: "Majestic snow-capped peaks perfect for skiing, hiking, and breathtaking views.",
-      price: "From $1,299"
+      price: "$1,299",
+      duration: "7 Days",
+      transport: "Train & Flight"
     },
     {
       id: 3,
@@ -36,7 +50,9 @@ const Destinations = () => {
       rating: 4.9,
       reviews: "3.1k",
       description: "A mesmerizing blend of neon-lit skyscrapers, historic temples, and incredible cuisine.",
-      price: "From $1,499"
+      price: "$1,499",
+      duration: "6 Days",
+      transport: "Local Transport"
     },
     {
       id: 4,
@@ -46,7 +62,9 @@ const Destinations = () => {
       rating: 4.7,
       reviews: "1.8k",
       description: "Iconic white-washed buildings overlooking the crystal-clear Aegean Sea.",
-      price: "From $1,199"
+      price: "$1,199",
+      duration: "4 Days",
+      transport: "Ferry & Flight"
     },
     {
       id: 5,
@@ -56,17 +74,57 @@ const Destinations = () => {
       rating: 4.9,
       reviews: "4.2k",
       description: "Explore the ancient Incan citadel set high in the Andes Mountains.",
-      price: "From $999"
+      price: "$999",
+      duration: "5 Days",
+      transport: "Hiking & Train"
     },
     {
       id: 6,
-      name: "New York City, USA",
+      name: "Paris, France",
       category: "Cities",
-      image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+      image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
       rating: 4.8,
-      reviews: "5.5k",
-      description: "The city that never sleeps, featuring world-class shows, dining, and iconic sights.",
-      price: "From $850"
+      reviews: "3.9k",
+      description: "The city of light, home to the Eiffel Tower, world-class art, and romantic cafes.",
+      price: "$1,100",
+      duration: "5 Days",
+      transport: "Flight included"
+    },
+    {
+      id: 7,
+      name: "Maldives",
+      category: "Beaches",
+      image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
+      rating: 5.0,
+      reviews: "2.1k",
+      description: "Ultra-luxury water villas surrounded by turquoise lagoons and coral reefs.",
+      price: "$2,499",
+      duration: "6 Days",
+      transport: "Speedboat & Flight"
+    },
+    {
+      id: 8,
+      name: "Banff, Canada",
+      category: "Mountains",
+      image: "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7",
+      rating: 4.9,
+      reviews: "1.5k",
+      description: "Turquoise glacial lakes and soaring peaks in the heart of the Canadian Rockies.",
+      price: "$1,350",
+      duration: "7 Days",
+      transport: "Car Rental"
+    },
+    {
+      id: 9,
+      name: "Rome, Italy",
+      category: "Cultural",
+      image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5",
+      rating: 4.9,
+      reviews: "4.8k",
+      description: "A living museum of ancient history, magnificent architecture, and exquisite gelato.",
+      price: "$1,050",
+      duration: "5 Days",
+      transport: "Walking & Train"
     }
   ];
 
@@ -142,15 +200,30 @@ const Destinations = () => {
                     </div>
                   </div>
                   <p className="description">{dest.description}</p>
+                  <div className="card-extra-info">
+                    <span><i className="fas fa-clock"></i> {dest.duration}</span>
+                    <span><i className="fas fa-plane"></i> {dest.transport}</span>
+                  </div>
                   <div className="card-footer">
                     <span className="price">{dest.price}</span>
-                    <motion.button 
-                      className="btn-primary"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Explore
-                    </motion.button>
+                    <div className="card-actions">
+                      <motion.button 
+                        className="btn-explore"
+                        onClick={() => navigate(`/destinations/${dest.id}`)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Explore
+                      </motion.button>
+                      <motion.button 
+                        className="btn-book"
+                        onClick={() => handleBookNow(dest)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Book Now
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -158,6 +231,12 @@ const Destinations = () => {
           </AnimatePresence>
         </motion.div>
       </div>
+
+      <PaymentModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        destination={selectedDestination}
+      />
     </div>
   );
 };

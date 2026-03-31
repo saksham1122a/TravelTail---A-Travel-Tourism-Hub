@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Destinations from "./components/Destinations";
+import DestinationDetails from "./components/DestinationDetails";
 import Packages from "./components/Packages";
 import AdminDashboard from "../admin/AdminDashboard";
 import Profile from "./components/Profile";
@@ -36,6 +37,7 @@ const AnimatedRoutes = () => {
         <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
         <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
         <Route path="/destinations" element={<PageWrapper><Destinations /></PageWrapper>} />
+        <Route path="/destinations/:id" element={<PageWrapper><DestinationDetails /></PageWrapper>} />
         <Route path="/packages" element={<PageWrapper><Packages /></PageWrapper>} />
         <Route path="/admin" element={<PageWrapper><AdminDashboard /></PageWrapper>} />
         <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />

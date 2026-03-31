@@ -195,8 +195,22 @@
   color: #64748b;
   font-size: 0.95rem;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   flex-grow: 1;
+}
+
+.card-extra-info {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.card-extra-info i {
+  color: #14b8a6;
+  margin-right: 6px;
 }
 
 .card-footer {
@@ -205,12 +219,50 @@
   align-items: center;
   border-top: 1px solid #e2e8f0;
   padding-top: 1.2rem;
+  margin-top: auto;
 }
 
 .price {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #0f766e;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-explore, .btn-book {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.btn-explore {
+  background: transparent;
+  border: 1.5px solid #0f766e;
+  color: #0f766e;
+}
+
+.btn-explore:hover {
+  background: #f0fdfa;
+}
+
+.btn-book {
+  background: #0f766e;
+  border: 1.5px solid #0f766e;
+  color: white;
+}
+
+.btn-book:hover {
+  background: #115e59;
+  border-color: #115e59;
 }
 
 /* RESPONSIVE */
