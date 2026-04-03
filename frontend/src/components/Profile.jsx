@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { API_BASE } from "../config/api";
 import "../StyleSheets/Profile.css";
 
 const Profile = () => {
@@ -50,7 +51,7 @@ const Profile = () => {
 
     try {
       const token = sessionStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/users/profile", {
+      const res = await fetch(`${API_BASE}/api/users/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

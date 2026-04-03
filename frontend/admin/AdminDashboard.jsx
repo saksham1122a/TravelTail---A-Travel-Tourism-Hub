@@ -3,9 +3,11 @@ import "./AdminDashboard.css";
 import Destination from "./Destination";
 import Packages from "./Packages";
 import User from "./User";
+import { useDestinations } from "../src/context/DestinationContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AdminDashboard = () => {
+  const { destinations } = useDestinations();
   const [activeTab, setActiveTab] = useState("Overview");
   const [stats, setStats] = useState([
     { label: "Total Users", value: "0", trend: "+0%" },
@@ -18,21 +20,19 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const [usersRes, destsRes, pkgsRes] = await Promise.all([
-          fetch("http://localhost:5000/api/users", { headers: { Authorization: `Bearer ${token}` } }),
-          fetch("http://localhost:5000/api/destinations"),
-          fetch("http://localhost:5000/api/packages")
+        const [usersRes, pkgsRes] = await Promise.all([
+          fetch("http://localhost:5001/api/users", { headers: { Authorization: `Bearer ${token}` } }),
+          fetch("http://localhost:5001/api/packages")
         ]);
 
-        if (usersRes.ok && destsRes.ok && pkgsRes.ok) {
+        if (usersRes.ok && pkgsRes.ok) {
           const users = await usersRes.json();
-          const dests = await destsRes.json();
           const pkgs = await pkgsRes.json();
 
           setStats([
             { label: "Total Users", value: users.length.toString(), trend: "+12%" },
             { label: "Active Packages", value: pkgs.length.toString(), trend: "+5%" },
-            { label: "Destinations", value: dests.length.toString(), trend: "+2%" },
+            { label: "Destinations", value: destinations.length.toString(), trend: "+2%" },
             { label: "Revenue", value: "$84,500", trend: "+24%" }
           ]);
         }
@@ -41,7 +41,8 @@ const AdminDashboard = () => {
       }
     };
     fetchStats();
-  }, []);
+  }, [destinations]);
+
 
   const renderOverview = () => (
     <motion.div 

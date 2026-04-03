@@ -14,6 +14,7 @@ import Packages from "./components/Packages";
 import AdminDashboard from "../admin/AdminDashboard";
 import Profile from "./components/Profile";
 import { AuthProvider } from "./context/AuthContext";
+import { DestinationProvider } from "./context/DestinationContext";
 import PageWrapper from "./components/PageWrapper";
 import ScrollToTop from "./components/ScrollToTop";
 import "./App.css";
@@ -51,15 +52,16 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <AuthProvider>
-        <div className="app-wrapper">
-          <Preloader />
-          <Navbar />
-          <AnimatedRoutes />
-        </div>
+        <DestinationProvider>
+          <div className="app-wrapper">
+            <Preloader />
+            <Navbar />
+            <AnimatedRoutes />
+          </div>
+        </DestinationProvider>
       </AuthProvider>
     </Router>
   );
 };
 
 export default App;
-

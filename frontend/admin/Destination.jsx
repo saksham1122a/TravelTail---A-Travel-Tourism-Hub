@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from "react";
-import "./Destination.css";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDestinations } from "../src/context/DestinationContext";
+import { API_BASE } from "../src/config/api";
+import "./Destination.css";
 
 const Destination = () => {
-  const [destinations, setDestinations] = useState([]);
+  const { destinations, refreshDestinations } = useDestinations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDestination, setEditingDestination] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
+    category: "General",
     location: "",
     description: "",
+    longDescription: "",
     image: "",
     rating: 0,
+    reviews: "0",
+    price: "",
+    duration: "",
+    transport: "",
+    highlights: "",
     isPopular: false,
   });
-
-  useEffect(() => {
-    fetchDestinations();
-  }, []);
-
-  const fetchDestinations = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/destinations");
-      if (res.ok) {
-        const data = await res.json();
-        setDestinations(data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch destinations", error);
-    }
-  };
 
   const handleAddNew = () => {
     setEditingDestination(null);
     setFormData({
       name: "",
+      category: "General",
       location: "",
       description: "",
+      longDescription: "",
       image: "",
       rating: 0,
+      reviews: "0",
+      price: "",
+      duration: "",
+      transport: "",
+      highlights: "",
       isPopular: false,
     });
     setIsModalOpen(true);
@@ -48,10 +48,17 @@ const Destination = () => {
     setEditingDestination(dest);
     setFormData({
       name: dest.name,
+      category: dest.category || "General",
       location: dest.location,
       description: dest.description,
+      longDescription: dest.longDescription || "",
       image: dest.image,
       rating: dest.rating,
+      reviews: dest.reviews || "0",
+      price: dest.price || "",
+      duration: dest.duration || "",
+      transport: dest.transport || "",
+      highlights: dest.highlights ? dest.highlights.join(", ") : "",
       isPopular: dest.isPopular,
     });
     setIsModalOpen(true);
@@ -61,12 +68,12 @@ const Destination = () => {
     if (window.confirm("Are you sure you want to delete this destination?")) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/destinations/${id}`, {
+        const res = await fetch(`${API_BASE}/api/destinations/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
-          setDestinations(destinations.filter((d) => d._id !== id));
+          refreshDestinations();
         }
       } catch (error) {
         console.error("Delete error", error);
@@ -79,9 +86,17 @@ const Destination = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingDestination
-        ? `http://localhost:5000/api/destinations/${editingDestination._id}`
-        : "http://localhost:5000/api/destinations";
+        ? `${API_BASE}/api/destinations/${editingDestination._id}`
+        : `${API_BASE}/api/destinations`;
       const method = editingDestination ? "PUT" : "POST";
+
+
+      const submissionData = {
+        ...formData,
+        highlights: typeof formData.highlights === "string" 
+          ? formData.highlights.split(",").map(h => h.trim()).filter(h => h !== "")
+          : formData.highlights
+      };
 
       const res = await fetch(url, {
         method,
@@ -89,11 +104,11 @@ const Destination = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       if (res.ok) {
-        fetchDestinations();
+        refreshDestinations();
         setIsModalOpen(false);
       }
     } catch (error) {
@@ -123,12 +138,21 @@ const Destination = () => {
             >
               <div className="card-image">
                 <img src={dest.image} alt={dest.name} />
-                {dest.isPopular && <span className="popular-badge">Popular</span>}
+                <div className="badges">
+                  {dest.isPopular && <span className="popular-badge">Popular</span>}
+                  <span className="category-badge">{dest.category}</span>
+                </div>
               </div>
               <div className="card-details">
-                <h3>{dest.name}</h3>
+                <div className="card-title-row">
+                  <h3>{dest.name}</h3>
+                  <span className="rating"><i className="fas fa-star"></i> {dest.rating}</span>
+                </div>
                 <p className="location"><i className="fas fa-map-marker-alt"></i> {dest.location}</p>
-                <p className="desc">{dest.description.substring(0, 80)}...</p>
+                <div className="meta-details">
+                   <span><i className="fas fa-clock"></i> {dest.duration}</span>
+                   <span><i className="fas fa-tag"></i> {dest.price}</span>
+                </div>
                 <div className="actions">
                   <button className="btn-explore-preview" onClick={() => window.open("/destinations", "_blank")}>Explore</button>
                   <button className="btn-edit" onClick={() => handleEdit(dest)}>Edit</button>
@@ -160,6 +184,18 @@ const Destination = () => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>Category</label>
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
                   <label>Location</label>
                   <input
                     type="text"
@@ -168,27 +204,66 @@ const Destination = () => {
                     required
                   />
                 </div>
+                <div className="form-group">
+                  <label>Image URL</label>
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    required
+                  />
+                </div>
               </div>
+
               <div className="form-group">
-                <label>Description</label>
+                <label>Brief Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   required
                 />
               </div>
+
               <div className="form-group">
-                <label>Image URL</label>
-                <input
-                  type="text"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  required
+                <label>Long Description (for Detail Page)</label>
+                <textarea
+                  value={formData.longDescription}
+                  onChange={(e) => setFormData({ ...formData, longDescription: e.target.value })}
                 />
               </div>
+
               <div className="form-row">
                 <div className="form-group">
-                  <label>Rating</label>
+                  <label>Price</label>
+                  <input
+                    type="text"
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    placeholder="$000"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Duration</label>
+                  <input
+                    type="text"
+                    value={formData.duration}
+                    onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                    placeholder="X Days"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Transport Info</label>
+                  <input
+                    type="text"
+                    value={formData.transport}
+                    onChange={(e) => setFormData({ ...formData, transport: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Rating (0-5)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -198,17 +273,29 @@ const Destination = () => {
                     onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
                   />
                 </div>
-                <div className="form-group checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={formData.isPopular}
-                      onChange={(e) => setFormData({ ...formData, isPopular: e.target.checked })}
-                    />
-                    Is Popular?
-                  </label>
-                </div>
               </div>
+
+              <div className="form-group">
+                <label>Highlights (Comma separated)</label>
+                <input
+                  type="text"
+                  value={formData.highlights}
+                  onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
+                  placeholder="Temple visit, Snorkeling, Sunset tour"
+                />
+              </div>
+
+              <div className="form-group checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={formData.isPopular}
+                    onChange={(e) => setFormData({ ...formData, isPopular: e.target.checked })}
+                  />
+                  Mark as Popular Destination
+                </label>
+              </div>
+
               <div className="modal-actions">
                 <button type="button" className="btn-cancel" onClick={() => setIsModalOpen(false)}>
                   Cancel

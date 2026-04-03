@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./User.css";
 import { motion } from "framer-motion";
+import { API_BASE } from "../src/config/api";
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -21,7 +22,7 @@ const User = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/users", {
+      const res = await fetch(`${API_BASE}/api/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -49,7 +50,7 @@ const User = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+        const res = await fetch(`${API_BASE}/api/users/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -67,8 +68,8 @@ const User = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingUser 
-        ? `http://localhost:5000/api/users/${editingUser._id}`
-        : "http://localhost:5000/api/users";
+        ? `${API_BASE}/api/users/${editingUser._id}`
+        : `${API_BASE}/api/users`;
       const method = editingUser ? "PUT" : "POST";
 
       const res = await fetch(url, {

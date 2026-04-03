@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Packages.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE } from "../src/config/api";
 
 const Packages = () => {
   const [packages, setPackages] = useState([]);
@@ -21,7 +22,7 @@ const Packages = () => {
 
   const fetchPackages = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/packages");
+      const res = await fetch(`${API_BASE}/api/packages`);
       if (res.ok) {
         const data = await res.json();
         setPackages(data);
@@ -61,7 +62,7 @@ const Packages = () => {
     if (window.confirm("Are you sure you want to delete this package?")) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/packages/${id}`, {
+        const res = await fetch(`${API_BASE}/api/packages/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -79,8 +80,8 @@ const Packages = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingPackage
-        ? `http://localhost:5000/api/packages/${editingPackage._id}`
-        : "http://localhost:5000/api/packages";
+        ? `${API_BASE}/api/packages/${editingPackage._id}`
+        : `${API_BASE}/api/packages`;
       const method = editingPackage ? "PUT" : "POST";
 
       const res = await fetch(url, {

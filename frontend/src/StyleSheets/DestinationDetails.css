@@ -30,9 +30,9 @@
 .details-hero .container {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 4rem;
 }
 
 .hero-text h1 {
@@ -69,8 +69,8 @@
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 3rem;
-  padding: 4rem 2rem;
-  max-width: 1200px;
+  padding: 4rem;
+  max-width: 100%;
   margin: 0 auto;
 }
 
