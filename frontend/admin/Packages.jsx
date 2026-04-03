@@ -61,7 +61,7 @@ const Packages = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this package?")) {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const res = await fetch(`${API_BASE}/api/packages/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -78,7 +78,7 @@ const Packages = () => {
   const handleModalSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const url = editingPackage
         ? `${API_BASE}/api/packages/${editingPackage._id}`
         : `${API_BASE}/api/packages`;

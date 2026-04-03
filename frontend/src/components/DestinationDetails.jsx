@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import PaymentModal from "./PaymentModal";
+import LoginPromptModal from "./LoginPromptModal";
 import { API_BASE } from "../config/api";
+import { useAuth } from "../context/AuthContext";
 import "../StyleSheets/DestinationDetails.css";
 
 const DestinationDetails = () => {
@@ -10,7 +12,17 @@ const DestinationDetails = () => {
   const navigate = useNavigate();
   const [destination, setDestination] = useState(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+
+  const handleBookNow = () => {
+    if (!user) {
+      setIsLoginPromptOpen(true);
+      return;
+    }
+    setIsPaymentModalOpen(true);
+  };
 
   useEffect(() => {
     const fetchDestination = async () => {
@@ -99,7 +111,7 @@ const DestinationDetails = () => {
               <span className="price-amount">{destination.price}</span>
             </div>
             <p className="price-info">Per person inclusive of taxes</p>
-            <button className="btn-book-now" onClick={() => setIsPaymentModalOpen(true)}>
+            <button className="btn-book-now" onClick={handleBookNow}>
               Book Now
             </button>
             <div className="extra-benefits">
@@ -124,6 +136,11 @@ const DestinationDetails = () => {
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
         destination={destination}
+      />
+
+      <LoginPromptModal 
+        isOpen={isLoginPromptOpen}
+        onClose={() => setIsLoginPromptOpen(false)}
       />
     </div>
   );

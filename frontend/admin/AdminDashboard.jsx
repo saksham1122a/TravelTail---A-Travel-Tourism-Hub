@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const [usersRes, pkgsRes] = await Promise.all([
           fetch("http://localhost:5001/api/users", { headers: { Authorization: `Bearer ${token}` } }),
           fetch("http://localhost:5001/api/packages")

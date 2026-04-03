@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDestinations } from "../context/DestinationContext";
+import { useAuth } from "../context/AuthContext";
 import PaymentModal from "./PaymentModal";
+import LoginPromptModal from "./LoginPromptModal";
 import "../StyleSheets/Destination.css";
 
 const Destinations = () => {
@@ -11,9 +13,14 @@ const Destinations = () => {
   const navigate = useNavigate();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState(null);
-
+  const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
+  const { user } = useAuth();
 
   const handleBookNow = (dest) => {
+    if (!user) {
+      setIsLoginPromptOpen(true);
+      return;
+    }
     setSelectedDestination(dest);
     setIsPaymentModalOpen(true);
   };
@@ -132,6 +139,11 @@ const Destinations = () => {
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
         destination={selectedDestination}
+      />
+
+      <LoginPromptModal 
+        isOpen={isLoginPromptOpen}
+        onClose={() => setIsLoginPromptOpen(false)}
       />
     </div>
   );

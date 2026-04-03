@@ -21,7 +21,7 @@ const User = () => {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const res = await fetch(`${API_BASE}/api/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -49,7 +49,7 @@ const User = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const res = await fetch(`${API_BASE}/api/users/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` }
@@ -66,7 +66,7 @@ const User = () => {
   const handleModalSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const url = editingUser 
         ? `${API_BASE}/api/users/${editingUser._id}`
         : `${API_BASE}/api/users`;

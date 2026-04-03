@@ -67,7 +67,7 @@ const Destination = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this destination?")) {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const res = await fetch(`${API_BASE}/api/destinations/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -84,7 +84,7 @@ const Destination = () => {
   const handleModalSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const url = editingDestination
         ? `${API_BASE}/api/destinations/${editingDestination._id}`
         : `${API_BASE}/api/destinations`;

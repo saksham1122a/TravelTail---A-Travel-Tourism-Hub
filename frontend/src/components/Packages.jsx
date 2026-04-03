@@ -1,9 +1,27 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import PaymentModal from "./PaymentModal";
+import LoginPromptModal from "./LoginPromptModal";
 import "../StyleSheets/Packages.css";
 
 const Packages = () => {
   const [billingCycle, setBillingCycle] = useState("person");
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleBookNow = (pkg) => {
+    if (!user) {
+      setIsLoginPromptOpen(true);
+      return;
+    }
+    setSelectedPackage(pkg);
+    setIsPaymentModalOpen(true);
+  };
 
   const packages = [
     {
@@ -198,6 +216,7 @@ const Packages = () => {
                   className={`btn-book ${pkg.featured ? "btn-primary" : "btn-outline"}`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleBookNow(pkg)}
                 >
                   Book Now
                 </motion.button>
@@ -206,6 +225,17 @@ const Packages = () => {
           ))}
         </motion.div>
       </div>
+
+      <PaymentModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        destination={selectedPackage}
+      />
+
+      <LoginPromptModal 
+        isOpen={isLoginPromptOpen}
+        onClose={() => setIsLoginPromptOpen(false)}
+      />
     </div>
   );
 };
