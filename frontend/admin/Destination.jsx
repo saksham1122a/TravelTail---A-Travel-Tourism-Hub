@@ -5,9 +5,15 @@ import { API_BASE } from "../src/config/api";
 import "./Destination.css";
 
 const Destination = () => {
-  const { destinations, refreshDestinations } = useDestinations();
+  const { destinations, refreshDestinations, isLoading, error } = useDestinations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDestination, setEditingDestination] = useState(null);
+
+  // Fetch fresh data when this component mounts
+  React.useEffect(() => {
+    refreshDestinations();
+  }, [refreshDestinations]);
+
   const [formData, setFormData] = useState({
     name: "",
     category: "General",
@@ -120,49 +126,73 @@ const Destination = () => {
     <div className="admin-destination-container">
       <div className="destination-header">
         <h1>Manage Destinations</h1>
-        <button className="btn-add-primary" onClick={handleAddNew}>
-          + Add New Destination
-        </button>
+        <div className="header-actions">
+           <button className="btn-refresh" onClick={refreshDestinations} disabled={isLoading}>
+              {isLoading ? "Refreshing..." : "↻ Refresh"}
+           </button>
+           <button className="btn-add-primary" onClick={handleAddNew}>
+            + Add New Destination
+          </button>
+        </div>
       </div>
 
-      <div className="destinations-grid">
-        <AnimatePresence>
-          {destinations.map((dest) => (
-            <motion.div
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              key={dest._id}
-              className="destination-card"
-            >
-              <div className="card-image">
-                <img src={dest.image} alt={dest.name} />
-                <div className="badges">
-                  {dest.isPopular && <span className="popular-badge">Popular</span>}
-                  <span className="category-badge">{dest.category}</span>
+      {error && (
+        <div className="admin-error-banner">
+           <p>⚠️ {error}</p>
+           <button onClick={refreshDestinations}>Try Again</button>
+        </div>
+      )}
+
+      {isLoading && destinations.length === 0 ? (
+        <div className="admin-loading">
+          <div className="loader"></div>
+          <p>Fetching destinations...</p>
+        </div>
+      ) : (
+        <div className="destinations-grid">
+          <AnimatePresence>
+            {destinations.map((dest) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                key={dest._id}
+                className="destination-card"
+              >
+                <div className="card-image">
+                  <img src={dest.image} alt={dest.name} />
+                  <div className="badges">
+                    {dest.isPopular && <span className="popular-badge">Popular</span>}
+                    <span className="category-badge">{dest.category}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="card-details">
-                <div className="card-title-row">
-                  <h3>{dest.name}</h3>
-                  <span className="rating"><i className="fas fa-star"></i> {dest.rating}</span>
+                <div className="card-details">
+                  <div className="card-title-row">
+                    <h3>{dest.name}</h3>
+                    <span className="rating"><i className="fas fa-star"></i> {dest.rating}</span>
+                  </div>
+                  <p className="location"><i className="fas fa-map-marker-alt"></i> {dest.location}</p>
+                  
+                  <div className="admin-card-description">
+                     <p className="desc-short">{dest.description}</p>
+                  </div>
+
+                  <div className="meta-details">
+                     <span><i className="fas fa-clock"></i> {dest.duration}</span>
+                     <span><i className="fas fa-tag"></i> {dest.price}</span>
+                  </div>
+                  <div className="actions">
+                    <button className="btn-explore-preview" onClick={() => window.open("/destinations", "_blank")}>Explore</button>
+                    <button className="btn-edit" onClick={() => handleEdit(dest)}>Edit</button>
+                    <button className="btn-delete" onClick={() => handleDelete(dest._id)}>Delete</button>
+                  </div>
                 </div>
-                <p className="location"><i className="fas fa-map-marker-alt"></i> {dest.location}</p>
-                <div className="meta-details">
-                   <span><i className="fas fa-clock"></i> {dest.duration}</span>
-                   <span><i className="fas fa-tag"></i> {dest.price}</span>
-                </div>
-                <div className="actions">
-                  <button className="btn-explore-preview" onClick={() => window.open("/destinations", "_blank")}>Explore</button>
-                  <button className="btn-edit" onClick={() => handleEdit(dest)}>Edit</button>
-                  <button className="btn-delete" onClick={() => handleDelete(dest._id)}>Delete</button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      )}
 
       {isModalOpen && (
         <div className="admin-modal-overlay">

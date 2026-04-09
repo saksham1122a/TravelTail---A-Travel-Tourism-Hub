@@ -138,7 +138,7 @@ const Destinations = () => {
       <PaymentModal 
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
-        destination={selectedDestination}
+        item={selectedDestination}
       />
 
       <LoginPromptModal 

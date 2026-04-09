@@ -4,6 +4,7 @@ import Destination from "./Destination";
 import Packages from "./Packages";
 import User from "./User";
 import { useDestinations } from "../src/context/DestinationContext";
+import { API_BASE } from "../src/config/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AdminDashboard = () => {
@@ -21,8 +22,8 @@ const AdminDashboard = () => {
       try {
         const token = sessionStorage.getItem("token");
         const [usersRes, pkgsRes] = await Promise.all([
-          fetch("http://localhost:5001/api/users", { headers: { Authorization: `Bearer ${token}` } }),
-          fetch("http://localhost:5001/api/packages")
+          fetch(`${API_BASE}/api/users`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`${API_BASE}/api/packages`)
         ]);
 
         if (usersRes.ok && pkgsRes.ok) {

@@ -2,21 +2,30 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../StyleSheets/PaymentModal.css";
 
-const PaymentModal = ({ isOpen, onClose, destination }) => {
+const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedDestId, setSelectedDestId] = useState("");
 
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (item?.isPackage && !selectedDestId) {
+      alert("Please select a destination");
+      return;
+    }
     setIsSubmitted(true);
   };
 
   const handleClose = () => {
     setIsSubmitted(false);
+    setSelectedDestId("");
     onClose();
   };
+
+  const selectedDest = destinations?.find(d => d._id === selectedDestId);
+  const displayDestName = item?.isPackage ? (selectedDest?.name || "No destination selected") : item?.name;
 
   const backdropVariants = {
     hidden: { opacity: 0 },
@@ -62,12 +71,34 @@ const PaymentModal = ({ isOpen, onClose, destination }) => {
               >
                 <div className="order-summary">
                   <div className="summary-item">
-                    <span className="label">Destination:</span>
-                    <span className="value">{destination?.name}</span>
+                    <span className="label">Item:</span>
+                    <span className="value">{item?.name || item?.title}</span>
                   </div>
+                  {item?.isPackage && (
+                    <div className="summary-item destination-select-summary">
+                      <span className="label">Select Destination:</span>
+                      <select 
+                        value={selectedDestId} 
+                        onChange={(e) => setSelectedDestId(e.target.value)}
+                        className="dest-select"
+                        required
+                      >
+                        <option value="">-- Choose a location --</option>
+                        {destinations?.map(d => (
+                          <option key={d._id} value={d._id}>{d.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {!item?.isPackage && (
+                    <div className="summary-item">
+                      <span className="label">Location:</span>
+                      <span className="value">{item?.location}</span>
+                    </div>
+                  )}
                   <div className="summary-item total">
                     <span className="label">Total Amount:</span>
-                    <span className="value">{destination?.price}</span>
+                    <span className="value">{item?.price}</span>
                   </div>
                 </div>
 
@@ -135,7 +166,7 @@ const PaymentModal = ({ isOpen, onClose, destination }) => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                      {paymentMethod === "card" ? `Pay ${destination?.price}` : "Confirm Booking"}
+                      {paymentMethod === "card" ? `Pay ${item?.price}` : "Confirm Booking"}
                   </motion.button>
                   <button type="button" className="btn-return" onClick={handleClose}>
                     Cancel & Return
@@ -159,7 +190,7 @@ const PaymentModal = ({ isOpen, onClose, destination }) => {
                 </div>
                 <h3>Bon Voyage!</h3>
                 <p>
-                  Thank you! Your trip to <strong>{destination?.name}</strong> has been {paymentMethod === "card" ? "fully paid and confirmed" : "pre-confirmed with Cash on Delivery"}.
+                  Thank you! Your trip {item?.isPackage ? `with the ${item?.name} to ${displayDestName}` : `to ${item?.name}`} has been {paymentMethod === "card" ? "fully paid and confirmed" : "pre-confirmed with Cash on Delivery"}.
                 </p>
                 <div className="confirmation-details">
                   <div className="conf-item">

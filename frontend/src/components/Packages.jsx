@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useDestinations } from "../context/DestinationContext";
 import PaymentModal from "./PaymentModal";
 import LoginPromptModal from "./LoginPromptModal";
 import "../StyleSheets/Packages.css";
@@ -13,13 +14,16 @@ const Packages = () => {
   const [isLoginPromptOpen, setIsLoginPromptOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { destinations } = useDestinations();
 
   const handleBookNow = (pkg) => {
     if (!user) {
       setIsLoginPromptOpen(true);
       return;
     }
-    setSelectedPackage(pkg);
+    // For packages, we pass the package object. 
+    // We'll tell the modal that it's a package so it can offer destination selection.
+    setSelectedPackage({ ...pkg, isPackage: true });
     setIsPaymentModalOpen(true);
   };
 
@@ -229,7 +233,8 @@ const Packages = () => {
       <PaymentModal 
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
-        destination={selectedPackage}
+        item={selectedPackage}
+        destinations={destinations}
       />
 
       <LoginPromptModal 
