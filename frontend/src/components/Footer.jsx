@@ -173,7 +173,7 @@ const Footer = () => {
           <div className="footer-container">
             <div className="bottom-content">
               <p className="copyright">
-                © 2024 TravelTales. All rights reserved. Made with ❤️ for travelers.
+                © 2025 TravelTales. All rights reserved. Made with ❤️ for travelers.
               </p>
               <div className="bottom-links">
                 <Link to="/privacy">Privacy Policy</Link>

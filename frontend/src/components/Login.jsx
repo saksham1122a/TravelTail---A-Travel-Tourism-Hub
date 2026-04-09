@@ -144,6 +144,7 @@ const Login = () => {
                 onChange={handleChange}
                 className={errors.email ? "error" : ""}
                 placeholder="you@example.com"
+                autoComplete="email"
                 autoFocus
               />
               {errors.email && <span className="error-text">{errors.email}</span>}
@@ -161,6 +162,7 @@ const Login = () => {
                   onChange={handleChange}
                   className={errors.password ? "error" : ""}
                   placeholder="Enter your password"
+                  autoComplete="current-password"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
