@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const destinationRoutes = require('./routes/destination.routes');
 const packageRoutes = require('./routes/package.routes');
+const bookingRoutes = require('./routes/booking.routes');
 
 // Connect to MongoDB
 connectDB();
@@ -14,7 +15,7 @@ const app = express();
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'], // Vite dev server
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'], // Vite dev server
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/destinations', destinationRoutes);
 app.use('/api/packages', packageRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // Health check
 app.get('/', (req, res) => {

@@ -1,26 +1,79 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE } from "../config/api";
+import { useAuth } from "../context/AuthContext";
 import "../StyleSheets/PaymentModal.css";
 
 const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
+  const { user } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedDestId, setSelectedDestId] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Sync user details precisely when modal opens
+  React.useEffect(() => {
+    if (isOpen && user) {
+      setCustomerName(`${user.firstName || ''} ${user.lastName || ''}`.trim());
+      setCustomerEmail(user.email || "");
+    }
+  }, [isOpen, user]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (item?.isPackage && !selectedDestId) {
       alert("Please select a destination");
       return;
     }
-    setIsSubmitted(true);
+
+    setIsProcessing(true);
+    try {
+      const token = sessionStorage.getItem("token");
+      const selectedDest = destinations?.find(d => d._id === selectedDestId);
+      
+      const payload = {
+        itemType: item?.isPackage ? 'package' : 'destination',
+        itemName: item?.name || item?.title,
+        destinationName: item?.isPackage ? selectedDest?.name : undefined,
+        amount: item?.price,
+        paymentMethod: paymentMethod,
+        customerName,
+        customerEmail
+      };
+
+      // Ensure your backend server is indeed allowing this POST request.
+      const res = await fetch(`${API_BASE}/api/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        const errorMessage = errorData?.message || errorData?.error || "Failed to post booking";
+        throw new Error(errorMessage);
+      }
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+      alert(`Booking failed: ${error.message}. Please refresh or try logging in again if your session expired.`);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleClose = () => {
     setIsSubmitted(false);
     setSelectedDestId("");
+    setCustomerName("");
+    setCustomerEmail("");
     onClose();
   };
 
@@ -140,12 +193,24 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
 
                   <div className="form-group full">
                     <label>Full Name</label>
-                    <input type="text" placeholder="John Doe" required />
+                    <input 
+                      type="text" 
+                      placeholder="John Doe" 
+                      value={customerName} 
+                      onChange={(e) => setCustomerName(e.target.value)} 
+                      required 
+                    />
                   </div>
 
                   <div className="form-group full">
                     <label>Email Address</label>
-                    <input type="email" placeholder="john@example.com" required />
+                    <input 
+                      type="email" 
+                      placeholder="john@example.com" 
+                      value={customerEmail} 
+                      onChange={(e) => setCustomerEmail(e.target.value)} 
+                      required 
+                    />
                   </div>
 
                   <AnimatePresence>
@@ -183,10 +248,11 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
                     className="btn-pay"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    disabled={isProcessing}
                   >
-                      {paymentMethod === "card" ? `Pay ${item?.price}` : "Confirm Booking"}
+                      {isProcessing ? "Processing..." : (paymentMethod === "card" ? `Pay ${item?.price}` : "Confirm Booking")}
                   </motion.button>
-                  <button type="button" className="btn-return" onClick={handleClose}>
+                  <button type="button" className="btn-return" onClick={handleClose} disabled={isProcessing}>
                     Cancel & Return
                   </button>
 

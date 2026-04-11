@@ -82,122 +82,169 @@
   flex: 1;
 }
 
-.mini-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+.item-list {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 0.5rem;
 }
 
-/* Custom Scrollbar for mini-grid */
-.mini-grid::-webkit-scrollbar {
+.item-list::-webkit-scrollbar {
   width: 6px;
 }
-.mini-grid::-webkit-scrollbar-track {
+.item-list::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
-.mini-grid::-webkit-scrollbar-thumb {
+.item-list::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 10px;
 }
 
-.mini-card {
-  display: flex;
-  background: #f8fafc;
+.main-item-card {
+  background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
-  overflow: hidden;
+  padding: 1.25rem;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.mini-card:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+.main-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #cbd5e1;
+  padding-bottom: 0.75rem;
 }
 
-.mini-card img {
-  width: 100px;
-  height: 100px;
+.main-item-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-item-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 0.5rem;
   object-fit: cover;
 }
 
-.mini-card-info {
-  padding: 1rem;
-  flex: 1;
+.pkg-icon-placeholder {
+  width: 45px;
+  height: 45px;
+  border-radius: 0.5rem;
+  background: #f1f5f9;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
 }
 
-.mini-card-info h4 {
-  font-size: 1.05rem;
+.main-item-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 0.25rem;
+  margin: 0;
 }
 
-.mini-card-info p {
+.category-label {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.booking-stats {
   font-size: 0.85rem;
-  color: var(--text-muted);
+  font-weight: 600;
+  background: #e0e7ff;
+  color: #4f46e5;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+.nested-bookings-list {
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.nested-bookings-list h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.nested-booking-item {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.dest-card .mini-card-info {
-  justify-content: center;
-}
-
-.dest-card .mini-card-info p {
-  color: var(--primary-color);
-  font-weight: 500;
+.nested-booking-item:last-child {
   margin-bottom: 0;
 }
 
-.pkg-image-wrapper {
-  width: 100px;
-  height: auto;
-}
-
-.pkg-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-meta {
+.nested-top {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 0.75rem;
-  color: var(--text-muted);
+  margin-bottom: 0.5rem;
 }
 
-.card-meta .price {
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: auto;
-}
-
-.btn-edit, .btn-delete {
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
+.nested-customer {
+  font-size: 0.9rem;
   font-weight: 600;
-  cursor: pointer;
-  border: none;
-  flex: 1;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.btn-edit { background: #e2e8f0; color: #334155; }
-.btn-edit:hover { background: #cbd5e1; }
+.nested-customer i {
+  color: var(--primary-color);
+  font-size: 0.8rem;
+}
 
-.btn-delete { background: #fee2e2; color: #ef4444; }
-.btn-delete:hover { background: #fca5a5; }
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.status-confirmed, .status-completed { background: #10b981; }
+.status-pending { background: #f59e0b; }
+.status-cancelled { background: #ef4444; }
+
+.nested-bottom {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nested-detail {
+  font-size: 0.8rem;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nested-detail i {
+  color: #94a3b8;
+}
+
+.no-bookings-txt {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-style: italic;
+}
 
 .loading-state {
   text-align: center;
@@ -295,4 +342,126 @@
   border-radius: 0.5rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+/* Global Recent Bookings Activity Layout Below Partitions */
+.new-bookings-section {
+  margin-top: 2.5rem;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.new-bookings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.new-bookings-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.new-bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.new-booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.new-booking-card:hover {
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.nb-card-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.nb-icon-type {
+  width: 50px;
+  height: 50px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.nb-destination {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.nb-package {
+  background: #fef08a;
+  color: #ca8a04;
+}
+
+.nb-info-main h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.nb-info-main p {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.nb-email {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.nb-card-right {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.nb-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nb-detail span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.nb-detail strong {
+  font-size: 0.95rem;
+  color: var(--text-main);
 }

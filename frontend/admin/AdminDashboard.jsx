@@ -3,6 +3,7 @@ import "./AdminDashboard.css";
 import Destination from "./Destination";
 import Packages from "./Packages";
 import User from "./User";
+import Setting from "./Setting";
 import { useDestinations } from "../src/context/DestinationContext";
 import { API_BASE } from "../src/config/api";
 import { motion, AnimatePresence } from "framer-motion";
@@ -148,12 +149,7 @@ const AdminDashboard = () => {
               {activeTab === "Users" && <User />}
               {activeTab === "Packages" && <Packages />}
               {activeTab === "Destinations" && <Destination />}
-              {activeTab === "Settings" && (
-                <div className="placeholder-content">
-                  <h2>Settings</h2>
-                  <p>Configuration panel coming soon.</p>
-                </div>
-              )}
+              {activeTab === "Settings" && <Setting />}
             </motion.div>
           </AnimatePresence>
         </div>
