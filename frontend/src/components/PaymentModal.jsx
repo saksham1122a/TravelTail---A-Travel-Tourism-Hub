@@ -33,9 +33,19 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
   };
 
   const modalVariants = {
-    hidden: { scale: 0.8, opacity: 0, y: -20 },
-    visible: { scale: 1, opacity: 1, y: 0 },
-    exit: { scale: 0.8, opacity: 0, y: 20 }
+    hidden: { scale: 0.8, opacity: 0, y: 50 },
+    visible: { 
+      scale: 1, 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring", damping: 25, stiffness: 300 }
+    },
+    exit: { 
+      scale: 0.8, 
+      opacity: 0, 
+      y: 50,
+      transition: { duration: 0.2 }
+    }
   };
 
   return (
@@ -57,11 +67,19 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="modal-header">
+            {!isSubmitted ? (
+              <button className="btn-back" onClick={handleClose} title="Go Back">
+                <i className="fas fa-arrow-left"></i>
+              </button>
+            ) : (
+              <div style={{ width: 40 }}></div>
+            )}
             <h2>{isSubmitted ? "Booking Confirmed!" : "Secure Checkout"}</h2>
-            <button className="btn-close" onClick={handleClose}>&times;</button>
+            <button className="btn-close" onClick={handleClose} title="Close">&times;</button>
           </div>
 
-          <AnimatePresence mode="wait">
+          <div className="modal-body">
+            <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div 
                 key="form"
@@ -153,7 +171,7 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
                           </div>
                           <div className="form-group">
                             <label>CVV</label>
-                            <input type="password" placeholder="XXX" required={paymentMethod === "card"} />
+                            <input type="password" placeholder="XXX" required={paymentMethod === "card"} autoComplete="off" />
                           </div>
                         </div>
                       </motion.div>
@@ -195,7 +213,7 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
                 <div className="confirmation-details">
                   <div className="conf-item">
                     <span>Total Amount:</span>
-                    <strong>{destination?.price}</strong>
+                    <strong>{item?.price}</strong>
                   </div>
                   <div className="conf-item">
                     <span>Booking ID:</span>
@@ -208,6 +226,7 @@ const PaymentModal = ({ isOpen, onClose, item, destinations }) => {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

@@ -7,6 +7,60 @@ import PaymentModal from "./PaymentModal";
 import LoginPromptModal from "./LoginPromptModal";
 import "../StyleSheets/Packages.css";
 
+export const getFrontendPackages = (billingCycle) => [
+  {
+    id: 1,
+    name: "Weekend Getaway",
+    type: "Basic",
+    price: billingCycle === "person" ? "$299" : "$499",
+    billing: billingCycle === "person" ? "/ person" : "/ couple",
+    duration: "3 Days, 2 Nights",
+    featured: false,
+    features: [
+      "3-Star Hotel Accommodation",
+      "Round-trip Airport Transfers",
+      "Daily Breakfast",
+      "Half-day City Tour",
+      "24/7 Phone Support"
+    ]
+  },
+  {
+    id: 2,
+    name: "Tropical Escape",
+    type: "Popular",
+    price: billingCycle === "person" ? "$799" : "$1,399",
+    billing: billingCycle === "person" ? "/ person" : "/ couple",
+    duration: "7 Days, 6 Nights",
+    featured: true,
+    badgeText: "Best Value",
+    features: [
+      "4-Star Beachfront Resort",
+      "All Flights & Transfers",
+      "All-inclusive Meals & Drinks",
+      "2 Guided Excursions",
+      "Snorkeling Gear Rental",
+      "Spa Discount (20%)"
+    ]
+  },
+  {
+    id: 3,
+    name: "Luxury Retreat",
+    type: "Premium",
+    price: billingCycle === "person" ? "$1,899" : "$3,499",
+    billing: billingCycle === "person" ? "/ person" : "/ couple",
+    duration: "10 Days, 9 Nights",
+    featured: false,
+    features: [
+      "5-Star Luxury Villa",
+      "First-class Flight Upgrades",
+      "Private Chef & Dining",
+      "Private Yacht Tour (1 Day)",
+      "VIP Fast-track Airport Entry",
+      "Dedicated Concierge Service"
+    ]
+  }
+];
+
 const Packages = () => {
   const [billingCycle, setBillingCycle] = useState("person");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -27,59 +81,7 @@ const Packages = () => {
     setIsPaymentModalOpen(true);
   };
 
-  const packages = [
-    {
-      id: 1,
-      name: "Weekend Getaway",
-      type: "Basic",
-      price: billingCycle === "person" ? "$299" : "$499",
-      billing: billingCycle === "person" ? "/ person" : "/ couple",
-      duration: "3 Days, 2 Nights",
-      featured: false,
-      features: [
-        "3-Star Hotel Accommodation",
-        "Round-trip Airport Transfers",
-        "Daily Breakfast",
-        "Half-day City Tour",
-        "24/7 Phone Support"
-      ]
-    },
-    {
-      id: 2,
-      name: "Tropical Escape",
-      type: "Popular",
-      price: billingCycle === "person" ? "$799" : "$1,399",
-      billing: billingCycle === "person" ? "/ person" : "/ couple",
-      duration: "7 Days, 6 Nights",
-      featured: true,
-      badgeText: "Best Value",
-      features: [
-        "4-Star Beachfront Resort",
-        "All Flights & Transfers",
-        "All-inclusive Meals & Drinks",
-        "2 Guided Excursions",
-        "Snorkeling Gear Rental",
-        "Spa Discount (20%)"
-      ]
-    },
-    {
-      id: 3,
-      name: "Luxury Retreat",
-      type: "Premium",
-      price: billingCycle === "person" ? "$1,899" : "$3,499",
-      billing: billingCycle === "person" ? "/ person" : "/ couple",
-      duration: "10 Days, 9 Nights",
-      featured: false,
-      features: [
-        "5-Star Luxury Villa",
-        "First-class Flight Upgrades",
-        "Private Chef & Dining",
-        "Private Yacht Tour (1 Day)",
-        "VIP Fast-track Airport Entry",
-        "Dedicated Concierge Service"
-      ]
-    }
-  ];
+  const packages = getFrontendPackages(billingCycle);
 
   const containerVariants = {
     initial: {},
